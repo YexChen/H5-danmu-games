@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv = "Content-Type" content = "text/html;charset = UTF-8">
+		<title>弹幕游戏</title>
+		<style>
+			*{
+				margin : 0;
+				padding : 0;
+			}
+			html,body{
+				width : 100%;
+				height : 100%;
+			}
+			.beijing{
+				position : absolute;
+				background-color : #EEEEEE;
+				width : 50%;
+				height : 80%;
+				left : 20%;
+				top : 10%;
+			}
+			.ziji{
+				background-image : url();
+			}
+		</style>
+		<script src = "https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	</head>
+
+	<body>
+		<div class = "beijing">
+			<div class = "ziji"></div>
+			<div class = "diji"></div>
+		</div>
+		
+		<script>
+			//定义按键监听
+			var getRight = false;
+			var getLeft = false;
+			var getTop = false;
+			var getBottom = false;
+			//接下来获取按键改变值，此外每一帧还有函数来检测
+			
+			//自机弹幕
+			function zijidan(){
+				this.speed-x : speed-x;
+				this.speed-y : speed-y;
+				this.x : x;
+				this.y : y;
+				this.image = image; 
+			}
+			//敌机弹幕
+			function zijidan(){
+				this.speed-x : speed-x;
+				this.speed-y : speed-y;
+				this.x : x;
+				this.y : y; 
+				this.image = image;
+			}
+			//发动符卡种类（目前做两种）
+			function BonusCard(){
+
+			}
+			//自机操控
+			function selfMoving(){
+
+			}
+			//敌机移动
+			function enemyMoving(){
+
+			}
+			//消弹函数
+			function bulletClear(){
+
+			}
+
+			//碰撞函数
+			function collision(){
+
+			}
+			//初始化函数
+			function intialize(){
+
+			}
+			//帧数演算函数（每一帧执行的）
+			function frameAction(){
+				//发动符卡
+				BonusCard();
+				//碰撞计算
+				collision();
+				//消弹
+				bulletClear();
+				//自机移动运算
+				selfMoving();
+				//敌机移动运算
+				enemyMoving();
+			}
+			//主函数
+			$(document).ready(){
+				//初始化
+				intialize();
+				//针对每一帧进行运算(先用setInterval 代替)
+				setInterval(
+					frameAction(),
+					50
+					)
+				
+			}
+		</script>
+	</body>
+
+</html>
