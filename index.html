@@ -21,7 +21,17 @@
 				top : 10%;
 			}
 			.ziji{
-				background-image : url();
+				background-image : url("images/ziji.png");
+				width : 38px;
+				height : 45px;
+			}
+			.zhenziji{
+				background-color : black;
+				width : 10px;
+				margin-top : 10px;
+				margin-left : 14px;
+				height : 10px;
+				border-radius : 50px;
 			}
 		</style>
 		<script src = "https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -29,7 +39,9 @@
 
 	<body>
 		<div class = "beijing">
-			<div class = "ziji"></div>
+			<div class = "ziji">
+				<div class = "zhenziji"></div>
+			</div>
 			<div class = "diji"></div>
 		</div>
 		
@@ -39,6 +51,8 @@
 			var getLeft = false;
 			var getTop = false;
 			var getBottom = false;
+			//全局移动速度
+			var speed = 7;
 			//接下来获取按键改变值，此外每一帧还有函数来检测
 			//另外按键离开也得有监听
 			document.onkeydown=function(event){
@@ -58,7 +72,7 @@
 			};
 			//定义按键离开的监听
 			document.onkeyup = function(event){
-				console.log(event.keyCode);
+				//console.log(event.keyCode);
 				if(event.keyCode == 39){
 					getRight = false;
 				}
@@ -93,8 +107,47 @@
 
 			}
 			//自机操控
+			//注意不要超出屏幕
 			function selfMoving(){
+				if(getRight == true){
+					var zijir = $(".ziji");
+					var speedforNowr = (zijir[0].style.marginLeft ? zijir[0].style.marginLeft : 0);
+					speedforNowr = parseInt(speedforNowr);
+				//	console.log(speedforNow + speed);
 
+					zijir[0].style.marginLeft = (speedforNowr + speed) + "px";
+					//console.log(ziji[0].style.marginLeft);					
+				}
+				if(getBottom == true){
+					var zijib = $(".ziji");
+					var speedforNowb = (zijib[0].style.marginTop ? zijib[0].style.marginTop : 0);
+					speedforNowb = parseInt(speedforNowb);
+				//	console.log(speedforNow + speed);
+
+					zijib[0].style.marginTop = (speedforNowb + speed) + "px";
+					//console.log(ziji[0].style.marginTop);					
+				}
+				if(getLeft == true){
+					var zijil = $(".ziji");
+					var speedforNowl = (zijil[0].style.marginLeft ? zijil[0].style.marginLeft : 0);
+					speedforNowl = parseInt(speedforNowl);
+				//	console.log(speedforNow + speed);
+
+					zijil[0].style.marginLeft = (speedforNowl - speed) + "px";
+					//console.log(ziji[0].style.marginTop);					
+				}
+				if(getTop == true){
+					var zijit = $(".ziji");
+					var speedforNowt = (zijit[0].style.marginTop ? zijit[0].style.marginTop : 0);
+					speedforNowt = parseInt(speedforNowt);
+				//	console.log(speedforNow + speed);
+
+					zijit[0].style.marginTop = (speedforNowt - speed) + "px";
+					//console.log(ziji[0].style.marginTop);					
+				}
+
+
+				//console.log(getRight);
 			}
 			//敌机移动
 			function enemyMoving(){
@@ -115,6 +168,7 @@
 			}
 			//帧数演算函数（每一帧执行的）
 			function frameAction(){
+				//console.log("frame function has been called");
 				//发动符卡
 				BonusCard();
 				//碰撞计算
@@ -125,16 +179,16 @@
 				selfMoving();
 				//敌机移动运算
 				enemyMoving();
+				requestAnimationFrame(frameAction);
 			}
 			//主函数
 			$(document).ready(function(){
 				//初始化
+				//console.log("main function has been called");
 				intialize();
 				//针对每一帧进行运算(先用setInterval 代替)
-				setInterval(
-					frameAction(),
-					50
-					)
+				requestAnimationFrame(frameAction);
+
 				
 			});
 		</script>
