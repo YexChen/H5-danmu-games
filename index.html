@@ -8,12 +8,15 @@
 				margin : 0;
 				padding : 0;
 			}
-			html,body{
+			html,body,.else{
 				width : 100%;
 				height : 100%;
 			}
+			body{
+				overflow : hidden;
+			}
 			.beijing{
-				position : absolute;
+				/*position : absolute;*/
 				background-color : #EEEEEE;
 				width : 50%;
 				height : 80%;
@@ -35,16 +38,24 @@
 				height : 10px;
 				border-radius : 5px;
 			}
+			.zijidan{
+				position : absolute;
+				background-image : url(images/zijidan.png);
+				width : 11px;
+				height : 15px;
+			}
 		</style>
 		<script src = "https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	</head>
 
 	<body>
-		<div class = "beijing">
+		<div>
 			<div class = "ziji">
 				<div class = "zhenziji"></div>
 			</div>
+		</div>
 			<div class = "diji"></div>
+		<div class = "else">
 		</div>
 		
 		<script>
@@ -103,21 +114,9 @@
 				}			
 			}
 			//自机弹幕
-			function zijidan(){
-				this.speedx = speedx;
-				this.speedy = speedy;
-				this.x = x;
-				this.y = y;
-				this.image = image; 
-			}
+
 			//敌机弹幕
-			function zijidan(){
-				this.speedx = speedx;
-				this.speedy = speedy;
-				this.x = x;
-				this.y = y; 
-				this.image = image;
-			}
+
 			//发动符卡种类（目前做两种）
 			function BonusCard(){
 
@@ -162,49 +161,10 @@
 					//console.log(ziji[0].style.marginTop);					
 				}
 
+			}
+
 				//console.log(getRight);
 				
-				//自机发射子弹
-				var zijix = $(".ziji")[0].style.marginLeft ? $(".ziji")[0].style.marginLeft : 0;
-				var zijiy = $(".ziji")[0].style.marginTop ? $(".ziji")[0].style.marginTop : 0;
-				var zijiyspeed = 10;
-				var zijiimg = "images/zijibullet.png";
-				zijix = parseInt(zijix);
-				zijiy = parseInt(zijiy);
-				//console.log(zijix);
-				//console.log(frames % 100);
-				//准备发射子弹
-				if(getShot == true && ((frames % 5) == 0)){
-					//console.log("yes");
-					bulletCreate(0,zijiyspeed,zijix,zijiy,zijiimg);
-				}
-			}
-
-			//子弹生成
-			function bulletCreate(xspeed,yspeed,x,y,img){
-				var temp = bullets.length;
-				//console.log(temp);
-				bullets[temp] = {
-					speedx : xspeed,
-					speedy : yspeed,
-					x : x,
-					y : y,
-					image : img 					
-				}
-				console.log(bullets);
-			}
-			
-			//子弹渲染
-			function bulletUpdate(){
-				for(var counter = 0;counter < bullets.length;counter++){
-					bullets[temp].x = bullets[temp].x + bullets[temp].xspeed;
-					bullets[temp].y = bullets[temp].y + bullets[temp].yspeed;
-
-					var newbody = "<div class = 'bullet'></div>";
-					$(newbody).append
-				}
-			}
-
 			//敌机移动
 			function enemyMoving(){
 
@@ -227,16 +187,15 @@
 				//console.log("frame function has been called");
 				//计算帧数
 				frames++;
+				//计算自机x,y值
 				//发动符卡
 				BonusCard();
 				//碰撞计算
 				collision();
-				//子弹渲染（更新子弹状态）
-				bulletUpdate();
-				//消弹
-				bulletClear();
 				//自机移动运算
 				selfMoving();
+				//消弹
+				bulletClear();
 				//敌机移动运算
 				enemyMoving();
 				requestAnimationFrame(frameAction);
