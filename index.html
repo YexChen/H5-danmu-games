@@ -21,17 +21,19 @@
 				top : 10%;
 			}
 			.ziji{
+				position : relative;
 				background-image : url("images/ziji.png");
 				width : 38px;
 				height : 45px;
 			}
 			.zhenziji{
-				background-color : black;
+				position : absolute;
+				background-image : url("images/panding.png");
 				width : 10px;
-				margin-top : 10px;
+				margin-top : 17px;
 				margin-left : 14px;
 				height : 10px;
-				border-radius : 50px;
+				border-radius : 5px;
 			}
 		</style>
 		<script src = "https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -51,8 +53,16 @@
 			var getLeft = false;
 			var getTop = false;
 			var getBottom = false;
+
+			var getShot = false;
 			//全局移动速度
 			var speed = 7;
+
+			//定义帧数
+			var frames = 0;
+
+			//子弹盒子，用来存放子弹数组（虽然我很想做自渲染移动之类的，但是好像做不到。。）
+			var bullets = [];
 			//接下来获取按键改变值，此外每一帧还有函数来检测
 			//另外按键离开也得有监听
 			document.onkeydown=function(event){
@@ -68,6 +78,9 @@
 				}
 				if(event.keyCode == 38){
 					getTop = true;
+				}	
+				if(event.keyCode == 90){
+					getShot = true;
 				}								
 			};
 			//定义按键离开的监听
@@ -84,7 +97,10 @@
 				}
 				if(event.keyCode == 38){
 					getTop = false;
-				}				
+				}			
+				if(event.keyCode == 90){
+					getShot = false;
+				}			
 			}
 			//自机弹幕
 			function zijidan(){
@@ -146,9 +162,49 @@
 					//console.log(ziji[0].style.marginTop);					
 				}
 
-
 				//console.log(getRight);
+				
+				//自机发射子弹
+				var zijix = $(".ziji")[0].style.marginLeft ? $(".ziji")[0].style.marginLeft : 0;
+				var zijiy = $(".ziji")[0].style.marginTop ? $(".ziji")[0].style.marginTop : 0;
+				var zijiyspeed = 10;
+				var zijiimg = "images/zijibullet.png";
+				zijix = parseInt(zijix);
+				zijiy = parseInt(zijiy);
+				//console.log(zijix);
+				//console.log(frames % 100);
+				//准备发射子弹
+				if(getShot == true && ((frames % 5) == 0)){
+					//console.log("yes");
+					bulletCreate(0,zijiyspeed,zijix,zijiy,zijiimg);
+				}
 			}
+
+			//子弹生成
+			function bulletCreate(xspeed,yspeed,x,y,img){
+				var temp = bullets.length;
+				//console.log(temp);
+				bullets[temp] = {
+					speedx : xspeed,
+					speedy : yspeed,
+					x : x,
+					y : y,
+					image : img 					
+				}
+				console.log(bullets);
+			}
+			
+			//子弹渲染
+			function bulletUpdate(){
+				for(var counter = 0;counter < bullets.length;counter++){
+					bullets[temp].x = bullets[temp].x + bullets[temp].xspeed;
+					bullets[temp].y = bullets[temp].y + bullets[temp].yspeed;
+
+					var newbody = "<div class = 'bullet'></div>";
+					$(newbody).append
+				}
+			}
+
 			//敌机移动
 			function enemyMoving(){
 
@@ -169,10 +225,14 @@
 			//帧数演算函数（每一帧执行的）
 			function frameAction(){
 				//console.log("frame function has been called");
+				//计算帧数
+				frames++;
 				//发动符卡
 				BonusCard();
 				//碰撞计算
 				collision();
+				//子弹渲染（更新子弹状态）
+				bulletUpdate();
 				//消弹
 				bulletClear();
 				//自机移动运算
