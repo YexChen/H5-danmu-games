@@ -17,6 +17,7 @@
 			}
 			.beijing{
 				/*position : absolute;*/
+				position : relative;
 				background-color : #EEEEEE;
 				width : 50%;
 				height : 80%;
@@ -24,7 +25,7 @@
 				top : 10%;
 			}
 			.ziji{
-				position : relative;
+				position : absolute;
 				background-image : url("images/ziji.png");
 				width : 38px;
 				height : 45px;
@@ -43,18 +44,28 @@
 				background-image : url(images/zijidan.png);
 				width : 11px;
 				height : 15px;
+				margin-left : 15px;
+				margin-top : -15px;
+			}
+			.diji{
+				position : absolute;
+				background-image : url("images/xiaotong.png");
+				width  : 33px;
+				height : 60px;
+				top : -200px;
+				left : 50%;
 			}
 		</style>
 		<script src = "https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	</head>
 
 	<body>
-		<div>
+		<div class = "beijing">
 			<div class = "ziji">
 				<div class = "zhenziji"></div>
 			</div>
-		</div>
 			<div class = "diji"></div>
+		</div>
 		<div class = "else">
 		</div>
 		
@@ -72,6 +83,8 @@
 			//定义帧数
 			var frames = 0;
 
+			//全局自机弹数
+			var zijinum = 0
 			//子弹盒子，用来存放子弹数组（虽然我很想做自渲染移动之类的，但是好像做不到。。）
 			var bullets = [];
 			//接下来获取按键改变值，此外每一帧还有函数来检测
@@ -119,6 +132,22 @@
 
 			//发动符卡种类（目前做两种）
 			function BonusCard(){
+				if(frames % 200 == 0){
+					var roll = Math.random * 10%3;
+					if(roll ==0){
+						card1();
+					}
+					// else if(roll == 1){
+					// 	card2();
+					// }
+					// else if(roll == 2){
+					// 	card3();
+					// }
+				 }
+			}
+
+			//第一张卡，随机弹
+			function card1(){
 
 			}
 			//自机操控
@@ -126,48 +155,83 @@
 			function selfMoving(){
 				if(getRight == true){
 					var zijir = $(".ziji");
-					var speedforNowr = (zijir[0].style.marginLeft ? zijir[0].style.marginLeft : 0);
+					var speedforNowr = (zijir[0].style.left ? zijir[0].style.left : 0);
 					speedforNowr = parseInt(speedforNowr);
 				//	console.log(speedforNow + speed);
 
-					zijir[0].style.marginLeft = (speedforNowr + speed) + "px";
-					//console.log(ziji[0].style.marginLeft);					
+					zijir[0].style.left = (speedforNowr + speed) + "px";
+					//console.log(ziji[0].style.left);					
 				}
 				if(getBottom == true){
 					var zijib = $(".ziji");
-					var speedforNowb = (zijib[0].style.marginTop ? zijib[0].style.marginTop : 0);
+					var speedforNowb = (zijib[0].style.top ? zijib[0].style.top : 0);
 					speedforNowb = parseInt(speedforNowb);
 				//	console.log(speedforNow + speed);
 
-					zijib[0].style.marginTop = (speedforNowb + speed) + "px";
-					//console.log(ziji[0].style.marginTop);					
+					zijib[0].style.top = (speedforNowb + speed) + "px";
+					//console.log(ziji[0].style.top);					
 				}
 				if(getLeft == true){
 					var zijil = $(".ziji");
-					var speedforNowl = (zijil[0].style.marginLeft ? zijil[0].style.marginLeft : 0);
+					var speedforNowl = (zijil[0].style.left ? zijil[0].style.left : 0);
 					speedforNowl = parseInt(speedforNowl);
 				//	console.log(speedforNow + speed);
 
-					zijil[0].style.marginLeft = (speedforNowl - speed) + "px";
-					//console.log(ziji[0].style.marginTop);					
+					zijil[0].style.left = (speedforNowl - speed) + "px";
+					//console.log(ziji[0].style.top);					
 				}
 				if(getTop == true){
 					var zijit = $(".ziji");
-					var speedforNowt = (zijit[0].style.marginTop ? zijit[0].style.marginTop : 0);
+					var speedforNowt = (zijit[0].style.top ? zijit[0].style.top : 0);
 					speedforNowt = parseInt(speedforNowt);
 				//	console.log(speedforNow + speed);
 
-					zijit[0].style.marginTop = (speedforNowt - speed) + "px";
-					//console.log(ziji[0].style.marginTop);					
+					zijit[0].style.top = (speedforNowt - speed) + "px";
+					//console.log(ziji[0].style.top);					
 				}
+				//控制子弹射击的代码
+				if(getShot == true){
 
+					//得到自机数据
+					var ziji_temp = document.getElementsByClassName("ziji")[0];
+					var ziji_temp_x = ziji_temp.style.left
+					var ziji_temp_y = ziji_temp.style.top
+
+					var zijidan = "<div class = 'zijidan'></div>";
+					var mybg = $(".beijing");
+					$(zijidan).appendTo(mybg);
+					var zijidanssss = document.getElementsByClassName("zijidan")[zijinum];
+					zijidanssss.style.left = ziji_temp.style.left;
+					zijidanssss.style.top = ziji_temp.style.top;
+					zijinum ++;
+					ziji_temp_y = (parseInt(ziji_temp_y) - 1000) + "px";
+					
+
+					//console.log(zijidanssss);
+					$(zijidanssss).animate({
+						left : ziji_temp.style.left,
+						top : ziji_temp_y
+					},"normal","swing",function(){
+						setTimeout(function(){
+							$(zijidanssss).remove();
+							zijinum--;}
+							,1000);
+					});
+				}
 			}
 
-				//console.log(getRight);
-				
+
 			//敌机移动
 			function enemyMoving(){
-
+				if(frames == 1){
+					$(".diji").animate({
+						top : "100px"
+					},1000,"swing")
+				}
+				if(frames > 100 && frames%150 == 0 ){
+					//这里发动符卡：随机弹
+					console.log("spell card called!");
+				}
 			}
 			//消弹函数
 			function bulletClear(){
